@@ -6,6 +6,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,6 +17,8 @@ class MyApp extends StatelessWidget {
 }
 
 class PomodoroScreen extends StatefulWidget {
+  const PomodoroScreen({super.key});
+
   @override
   _PomodoroScreenState createState() => _PomodoroScreenState();
 }
@@ -29,7 +33,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
     setState(() {
       _isRunning = true;
     });
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_minutes == 0 && _seconds == 0) {
         _stopTimer();
         _minutes = 25;
@@ -83,15 +87,15 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Warning'),
-          content: Text(
+          title: const Text('Warning'),
+          content: const Text(
               'Timer is on. You can\'t leave until alarm goes off. Please stay focused!'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Ok'),
+              child: const Text('Ok'),
             ),
           ],
         );
@@ -113,13 +117,13 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Stay Focused',
             style: TextStyle(color: Colors.white),
           ),
           flexibleSpace: Container(
             decoration: BoxDecoration(
-              gradient: SweepGradient(
+              gradient: const SweepGradient(
                 colors: [
                   Color(0xffffffff),
                   Color(0xff1e9ddc),
@@ -130,8 +134,8 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Color(0xFFa6a6a6).withOpacity(1),
-                  offset: Offset(0, 8),
+                  color: const Color(0xFFa6a6a6).withOpacity(1),
+                  offset: const Offset(0, 8),
                   blurRadius: 50,
                   spreadRadius: 1,
                 ),
@@ -140,7 +144,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
           ),
         ),
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: SweepGradient(
               colors: [Color(0xff629d96), Color(0xff77c6ee), Color(0xff59a67e)],
               stops: [0, 0.5, 1],
@@ -158,8 +162,8 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Color(0xFF979393).withOpacity(1),
-                            offset: Offset(0, 0),
+                            color: const Color(0xFF979393).withOpacity(1),
+                            offset: const Offset(0, 0),
                             blurRadius: 50,
                             spreadRadius: -3,
                           ),
@@ -167,15 +171,15 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                       ),
                       child: ElevatedButton(
                         onPressed: () => _setTimer(5),
-                        child: Text('Take a Brake'),
+                        child: const Text('Take a Brake'),
                       ),
                     ),
                     Container(
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Color(0xFF979393).withOpacity(1),
-                            offset: Offset(0, 0),
+                            color: const Color(0xFF979393).withOpacity(1),
+                            offset: const Offset(0, 0),
                             blurRadius: 50,
                             spreadRadius: -3,
                           ),
@@ -183,15 +187,15 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                       ),
                       child: ElevatedButton(
                         onPressed: () => _setTimer(15),
-                        child: Text('15 min'),
+                        child: const Text('15 min'),
                       ),
                     ),
                     Container(
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Color(0xFF979393).withOpacity(1),
-                            offset: Offset(0, 0),
+                            color: const Color(0xFF979393).withOpacity(1),
+                            offset: const Offset(0, 0),
                             blurRadius: 50,
                             spreadRadius: -3,
                           ),
@@ -199,17 +203,17 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                       ),
                       child: ElevatedButton(
                         onPressed: () => _setTimer(30),
-                        child: Text('30 min'),
+                        child: const Text('30 min'),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   '$_minutes:${_seconds.toString().padLeft(2, '0')}',
-                  style: TextStyle(fontSize: 132, color: Colors.white),
+                  style: const TextStyle(fontSize: 132, color: Colors.white),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -225,8 +229,8 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Color(0xFF979393).withOpacity(1),
-                                offset: Offset(0, 0),
+                                color: const Color(0xFF979393).withOpacity(1),
+                                offset: const Offset(0, 0),
                                 blurRadius: 50,
                                 spreadRadius: -3,
                               ),
@@ -234,7 +238,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                           ),
                           child: ElevatedButton(
                             onPressed: _isRunning ? null : _startTimer,
-                            child: Text('Start'),
+                            child: const Text('Start'),
                           ),
                         ),
                       ),
@@ -243,8 +247,8 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Color(0xFF979393).withOpacity(1),
-                            offset: Offset(0, 0),
+                            color: const Color(0xFF979393).withOpacity(1),
+                            offset: const Offset(0, 0),
                             blurRadius: 50,
                             spreadRadius: -3,
                           ),
@@ -252,7 +256,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                       ),
                       child: ElevatedButton(
                         onPressed: _resetTimer,
-                        child: Text('Reset'),
+                        child: const Text('Reset'),
                       ),
                     ),
                   ],
