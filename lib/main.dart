@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<TimerService>(
       create: (_) => TimerService(),
-      child: const MaterialApp(
+      child: MaterialApp(
         home: PomodoroScreen(),
       ),
     );
