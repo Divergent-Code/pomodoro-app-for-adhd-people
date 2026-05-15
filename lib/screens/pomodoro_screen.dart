@@ -87,7 +87,7 @@ class PomodoroScreen extends StatelessWidget {
                   children: [
                     CustomButton(
                       onPressed: () => timerService.setTimer(5),
-                      text: 'Take a Brake',
+                      text: 'Take a Break',
                     ),
                     CustomButton(
                       onPressed: () => timerService.setTimer(15),
