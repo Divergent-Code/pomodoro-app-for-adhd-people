@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:pomodoro_app/services/preferences_service.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
   @override
-  _SettingsScreenState createState() => _SettingsScreenState();
+  SettingsScreenState createState() => SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class SettingsScreenState extends State<SettingsScreen> {
   final _formKey = GlobalKey<FormState>();
   final _preferencesService = PreferencesService();
 
@@ -34,35 +36,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
       ),
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           children: [
             TextFormField(
               initialValue: _partnerPhoneNumber,
-              decoration: InputDecoration(labelText: 'Partner Phone Number'),
+              decoration: const InputDecoration(labelText: 'Partner Phone Number'),
               onSaved: (value) => _partnerPhoneNumber = value,
             ),
             TextFormField(
               initialValue: _partnerCarrier,
-              decoration: InputDecoration(labelText: 'Partner Carrier'),
+              decoration: const InputDecoration(labelText: 'Partner Carrier'),
               onSaved: (value) => _partnerCarrier = value,
             ),
             TextFormField(
               initialValue: _userEmail,
-              decoration: InputDecoration(labelText: 'Your Email'),
+              decoration: const InputDecoration(labelText: 'Your Email'),
               onSaved: (value) => _userEmail = value,
             ),
             TextFormField(
               initialValue: _userPassword,
-              decoration: InputDecoration(labelText: 'Your Email Password'),
+              decoration: const InputDecoration(labelText: 'Your Email Password'),
               obscureText: true,
               onSaved: (value) => _userPassword = value,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -74,7 +76,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Navigator.of(context).pop();
                 }
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         ),

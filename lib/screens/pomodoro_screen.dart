@@ -35,7 +35,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: !_timerService.isRunning,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) {
           return;
         }
@@ -45,7 +45,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
         appBar: AppBar(
           actions: [
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               onPressed: () {
                 Navigator.of(context).pushNamed('/settings');
               },
@@ -53,7 +53,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
           ],
         ),
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/background.jpeg'),
               fit: BoxFit.cover, // Ajusta la imagen para cubrir toda la pantalla
@@ -72,19 +72,19 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                     color: _timerService.getPhaseColor(),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Temporizador circular
                 _buildTimerDisplay(),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 // Controles principales
                 _buildMainControls(),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Controles secundarios (saltar, sonido, wakelock)
                 _buildSecondaryControls(),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 // Contador de pomodoros y progreso hacia pausa larga
                 _buildPomodoroProgress(),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Botón para detener alarma (visible solo cuando suena)
                 _buildAlarmControls(),
               ],
@@ -141,7 +141,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                   children: [
                     Text(
                       timerService.getFormattedTime(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -184,7 +184,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                   ? timerService.getPhaseColor()
                   : Colors.grey,
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             // Botón de Detener (solo visible cuando está corriendo)
             if (timerService.isRunning)
               CustomButton(
@@ -216,7 +216,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
               label: 'Skip',
               color: Colors.grey,
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             // Botón de WakeLock (mantener pantalla encendida)
             CustomButton(
               onPressed: () {
@@ -227,10 +227,10 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                   : Icons.screen_lock_portrait_outlined,
               label: timerService.isWakelockEnabled ? 'WL On' : 'WL Off',
               color: timerService.isWakelockEnabled
-                  ? Color.fromARGB(255, 92, 179, 95)
+                  ? const Color.fromARGB(255, 92, 179, 95)
                   : Colors.grey,
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             // Botón de sonido de tic-tac
             CustomButton(
               onPressed: () {
@@ -241,7 +241,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                   : Icons.volume_off,
               label: timerService.isTickSoundEnabled ? 'Sound On' : 'Sound Off',
               color: timerService.isTickSoundEnabled
-                  ? Color.fromARGB(255, 74, 140, 206)
+                  ? const Color.fromARGB(255, 74, 140, 206)
                   : Colors.grey,
             ),
           ],
@@ -257,16 +257,16 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
           children: [
             Text(
               'Completed: ${timerService.completedPomodoros}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               'Next long break in: ${timerService.pomodorosBeforeLongBreak}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 color: Colors.white70,
               ),
@@ -289,15 +289,15 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
             onPressed: () {
               timerService.stopAlarmSound();
             },
-            icon: Icon(Icons.alarm_off),
-            label: Text('Stop Alarm'),
+            icon: const Icon(Icons.alarm_off),
+            label: const Text('Stop Alarm'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
           );
         }
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
       },
     );
   }

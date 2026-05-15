@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
@@ -19,11 +20,11 @@ class EmailService {
 
     try {
       final sendReport = await send(message, smtpServer);
-      print('Message sent: ' + sendReport.toString());
+      debugPrint('Message sent: $sendReport');
     } on MailerException catch (e) {
-      print('Message not sent.');
+      debugPrint('Message not sent.');
       for (var p in e.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
+        debugPrint('Problem: ${p.code}: ${p.msg}');
       }
     }
   }

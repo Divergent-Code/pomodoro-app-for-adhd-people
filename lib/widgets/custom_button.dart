@@ -10,7 +10,7 @@ class CustomButton extends StatelessWidget {
   final bool isTextButton;
 
   const CustomButton({
-    Key? key,
+    super.key,
     this.onPressed,
     this.icon,
     this.label,
@@ -18,7 +18,7 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.height,
     this.isTextButton = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class CustomButton extends StatelessWidget {
             child: Center(
               child: Text(
                 label!,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
@@ -57,7 +57,7 @@ class CustomButton extends StatelessWidget {
           icon: Icon(icon, size: 18),
           label: Text(
             label!,
-            style: TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: 12),
           ),
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
@@ -96,12 +96,12 @@ class CustomButton extends StatelessWidget {
           ),
           child: Text(
             label!,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       );
     }
 
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 }

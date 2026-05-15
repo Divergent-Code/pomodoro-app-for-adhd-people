@@ -9,15 +9,15 @@ import 'dart:io';
 
 class TimerService extends ChangeNotifier {
   // Constantes para los modos del temporizador (en segundos)
-  static const int POMODORO_TIME = 20 * 60; // 20 minutos
-  static const int SHORT_BREAK_TIME = 15 * 60; // 15 minutos
-  static const int LONG_BREAK_TIME = 30 * 60; // 30 minutos
-  static const int POMODOROS_BEFORE_LONG_BREAK = 4; // Ciclos antes de pausa larga
-  static const int LONG_BREAK_THRESHOLD = 4;
-  static const int POMODORO_TIME_MAX = 1; // Para pruebas, 1 segundo = 1 pomodoro
-  static const int SHORT_BREAK_TIME_MAX = 2;
-  static const int LONG_BREAK_TIME_MAX = 3;
-  static const int RESET_TIME = 0;
+  static const int pomodoroTime = 20 * 60; // 20 minutos
+  static const int shortBreakTime = 15 * 60; // 15 minutos
+  static const int longBreakTime = 30 * 60; // 30 minutos
+  static const int pomodorosBeforeLongBreakConstant = 4; // Ciclos antes de pausa larga
+  static const int longBreakThreshold = 4;
+  static const int pomodoroTimeMax = 1; // Para pruebas, 1 segundo = 1 pomodoro
+  static const int shortBreakTimeMax = 2;
+  static const int longBreakTimeMax = 3;
+  static const int resetTime = 0;
 
   // Estados del temporizador
   final Stopwatch _elapsedTimer = Stopwatch(); // Tiempo transcurrido real
@@ -26,10 +26,10 @@ class TimerService extends ChangeNotifier {
    AudioPlayer? _audioPlayer; // Reproductor de audio principal
   AudioPlayer? _tickAudioPlayer; // Reproductor de audio para tic-tac
   // Contadores y estados
-  int _remainingTime = POMODORO_TIME; // Tiempo restante en segundos
+  int _remainingTime = pomodoroTime; // Tiempo restante en segundos
   int _completedPomodoros = 0; // Contador de pomodoros completados
   int _pomodorosBeforeLongBreak =
-      POMODOROS_BEFORE_LONG_BREAK; // Ciclos restantes antes de pausa larga
+      pomodorosBeforeLongBreakConstant; // Ciclos restantes antes de pausa larga
   bool _isRunning = false;
   bool _isPaused = false;
   bool _isBreak = false;
@@ -81,11 +81,11 @@ class TimerService extends ChangeNotifier {
   double getProgress() {
     int totalTime;
     if (_isBreak && _isLongBreak) {
-      totalTime = LONG_BREAK_TIME;
+      totalTime = longBreakTime;
     } else if (_isBreak) {
-      totalTime = SHORT_BREAK_TIME;
+      totalTime = shortBreakTime;
     } else {
-      totalTime = POMODORO_TIME;
+      totalTime = pomodoroTime;
     }
     return (_remainingTime / totalTime).clamp(0.0, 1.0);
   }
@@ -93,11 +93,11 @@ class TimerService extends ChangeNotifier {
   // Obtener color según la fase actual
   Color getPhaseColor() {
     if (_isBreak && _isLongBreak) {
-      return Color(0xFF4CAF50); // Verde para pausa larga
+      return const Color(0xFF4CAF50); // Verde para pausa larga
     } else if (_isBreak) {
-      return Color(0xFFFF9800); // Naranja para pausa corta
+      return const Color(0xFFFF9800); // Naranja para pausa corta
     } else {
-      return Color(0xFFFF5252); // Rojo para pomodoro
+      return const Color(0xFFFF5252); // Rojo para pomodoro
     }
   }
 
@@ -126,7 +126,7 @@ void startTimer() async {
   _isPaused = false;
   
   // Iniciar el timer que actualiza la UI cada segundo
-  _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
     _updateTimer();
   });
   
@@ -153,7 +153,7 @@ void startTimer() async {
     if (!_isPaused) return;
 
     _elapsedTimer.start();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _updateTimer();
     });
     _startTickSound();
@@ -174,11 +174,11 @@ void startTimer() async {
 
     // Restablecer al tiempo según la fase actual
     if (_isBreak && _isLongBreak) {
-      _remainingTime = LONG_BREAK_TIME;
+      _remainingTime = longBreakTime;
     } else if (_isBreak) {
-      _remainingTime = SHORT_BREAK_TIME;
+      _remainingTime = shortBreakTime;
     } else {
-      _remainingTime = POMODORO_TIME;
+      _remainingTime = pomodoroTime;
     }
 
     notifyListeners();
@@ -195,7 +195,7 @@ void startTimer() async {
       // Si está en pausa, volver a pomodoro
       _isBreak = false;
       _isLongBreak = false;
-      _remainingTime = POMODORO_TIME;
+      _remainingTime = pomodoroTime;
       _currentPhase = 'Pomodoro';
     } else {
       // Si está en pomodoro, ir a pausa
@@ -204,12 +204,12 @@ void startTimer() async {
       if (_pomodorosBeforeLongBreak <= 0) {
         _isLongBreak = true;
         _isBreak = true;
-        _remainingTime = LONG_BREAK_TIME;
+        _remainingTime = longBreakTime;
         _currentPhase = 'Long Break';
-        _pomodorosBeforeLongBreak = POMODOROS_BEFORE_LONG_BREAK;
+        _pomodorosBeforeLongBreak = pomodorosBeforeLongBreakConstant;
       } else {
         _isBreak = true;
-        _remainingTime = SHORT_BREAK_TIME;
+        _remainingTime = shortBreakTime;
         _currentPhase = 'Short Break';
       }
     }
@@ -260,10 +260,10 @@ void startTimer() async {
     
     // Reproducir el tic-tac en bucle
     try {
-      String assetPath = 'assets/audio/clock_ticking.mp3';
+      String assetPath = 'audio/clock_ticking.mp3';
       await _tickAudioPlayer!.play(AssetSource(assetPath));
     } catch (e) {
-      print('Error playing tick sound: $e');
+      debugPrint('Error playing tick sound: $e');
     }
   }
 
@@ -290,11 +290,11 @@ void startTimer() async {
   // Obtener el tiempo total según la fase actual
   int _getTotalTime() {
     if (_isBreak && _isLongBreak) {
-      return LONG_BREAK_TIME;
+      return longBreakTime;
     } else if (_isBreak) {
-      return SHORT_BREAK_TIME;
+      return shortBreakTime;
     } else {
-      return POMODORO_TIME;
+      return pomodoroTime;
     }
   }
 
@@ -310,7 +310,7 @@ void startTimer() async {
       // Transición de pausa a pomodoro
       _isBreak = false;
       _isLongBreak = false;
-      _remainingTime = POMODORO_TIME;
+      _remainingTime = pomodoroTime;
       _currentPhase = 'Pomodoro';
       await playAlarmSound();
     } else {
@@ -320,17 +320,21 @@ void startTimer() async {
       if (_pomodorosBeforeLongBreak <= 0) {
         _isLongBreak = true;
         _isBreak = true;
-        _remainingTime = LONG_BREAK_TIME;
+        _remainingTime = longBreakTime;
         _currentPhase = 'Long Break';
-        _pomodorosBeforeLongBreak = POMODOROS_BEFORE_LONG_BREAK;
+        _pomodorosBeforeLongBreak = pomodorosBeforeLongBreakConstant;
         await playAlarmSound();
-        Provider.of<LockScreenService>(context, listen: false).lock();
+        if (context.mounted) {
+          Provider.of<LockScreenService>(context, listen: false).lock();
+        }
       } else {
         _isBreak = true;
-        _remainingTime = SHORT_BREAK_TIME;
+        _remainingTime = shortBreakTime;
         _currentPhase = 'Short Break';
         await playAlarmSound();
-        Provider.of<LockScreenService>(context, listen: false).lock();
+        if (context.mounted) {
+          Provider.of<LockScreenService>(context, listen: false).lock();
+        }
       }
     }
 
@@ -346,9 +350,9 @@ void startTimer() async {
         _audioPlayer = AudioPlayer();
         await _audioPlayer!.setReleaseMode(ReleaseMode.loop);
       }
-      await _audioPlayer!.play(AssetSource('assets/audio/clock_ticking_two.mp3'));
+      await _audioPlayer!.play(AssetSource('audio/clock_ticking_two.mp3'));
        } catch (e) {
-      print('Error playing alarm: $e');
+      debugPrint('Error playing alarm: $e');
     }
   }
 

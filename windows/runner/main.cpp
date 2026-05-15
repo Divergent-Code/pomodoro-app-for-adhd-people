@@ -36,9 +36,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   }
   window.SetQuitOnClose(true);
 
-  flutter::MethodChannel<> channel(window.messenger(), "com.divergentcode.pomodoro/lockdown", &flutter::StandardMethodCodec::GetInstance());
+  flutter::MethodChannel<flutter::EncodableValue> channel(window.controller()->engine()->messenger(), "com.divergentcode.pomodoro/lockdown", &flutter::StandardMethodCodec::GetInstance());
   channel.SetMethodCallHandler(
-      [](const flutter::MethodCall<>& call, std::unique_ptr<flutter::MethodResult<>> result) {
+      [](const flutter::MethodCall<flutter::EncodableValue>& call, std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
         if (call.method_name().compare("minimizeWindows") == 0) {
           MinimizeTargetWindows();
           result->Success();

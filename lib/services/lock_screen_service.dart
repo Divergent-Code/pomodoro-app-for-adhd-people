@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 
 import 'dart:math';
 
@@ -26,7 +27,7 @@ class LockScreenService extends ChangeNotifier {
     try {
       await platform.invokeMethod('minimizeWindows');
     } on PlatformException catch (e) {
-      print("Failed to minimize windows: '${e.message}'.");
+      debugPrint("Failed to minimize windows: '${e.message}'.");
     }
   }
 

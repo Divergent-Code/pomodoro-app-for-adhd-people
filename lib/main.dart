@@ -25,9 +25,9 @@ class MyApp extends StatelessWidget {
         builder: (context, lockScreenService, child) {
           return MaterialApp(
             navigatorKey: navigatorKey,
-            home: lockScreenService.isLocked ? LockScreen() : PomodoroScreen(),
+            home: lockScreenService.isLocked ? const LockScreen() : PomodoroScreen(),
             routes: {
-              '/settings': (context) => SettingsScreen(),
+              '/settings': (context) => const SettingsScreen(),
             },
           );
         },

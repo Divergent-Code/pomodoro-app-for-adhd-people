@@ -3,7 +3,9 @@
     {
       "name": "windows-gcc-x64",
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/windows/flutter/ephemeral",
+        "${workspaceFolder}/windows/flutter/ephemeral/cpp_client_wrapper/include"
       ],
       "compilerPath": "gcc",
       "cStandard": "${default}",
