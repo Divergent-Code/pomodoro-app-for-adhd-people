@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/timer_service.dart';
 import '../widgets/custom_button.dart';
-import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
-import 'dart:io';
 
+// ignore: use_key_in_widget_constructors
 class PomodoroScreen extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _PomodoroScreenState createState() => _PomodoroScreenState();
 }
 

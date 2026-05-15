@@ -6,9 +6,9 @@ import 'dart:io';
 
 class TimerService extends ChangeNotifier {
   // Constantes para los modos del temporizador (en segundos)
-  static const int POMODORO_TIME = 25 * 60; // 25 minutos
-  static const int SHORT_BREAK_TIME = 5 * 60; // 5 minutos
-  static const int LONG_BREAK_TIME = 15 * 60; // 15 minutos
+  static const int POMODORO_TIME = 20 * 60; // 20 minutos
+  static const int SHORT_BREAK_TIME = 15 * 60; // 15 minutos
+  static const int LONG_BREAK_TIME = 30 * 60; // 30 minutos
   static const int POMODOROS_BEFORE_LONG_BREAK = 4; // Ciclos antes de pausa larga
   static const int LONG_BREAK_THRESHOLD = 4;
   static const int POMODORO_TIME_MAX = 1; // Para pruebas, 1 segundo = 1 pomodoro
