@@ -1,0 +1,13 @@
+CompileFlags:
+  Add:
+    # Flutter C++ client wrapper headers (dart_project.h, flutter_view_controller.h, etc.)
+    - -Iwindows/flutter/ephemeral/cpp_client_wrapper/include
+    # Flutter engine headers (flutter_windows.h, flutter_export.h, etc.)
+    - -Iwindows/flutter/ephemeral
+    # Runner source root (flutter_window.h, utils.h, window_manager.h)
+    - -Iwindows/runner
+    # Windows SDK / MSVC compat
+    - -DUNICODE
+    - -D_UNICODE
+    - -DNOMINMAX
+    - --target=x86_64-pc-windows-msvc
