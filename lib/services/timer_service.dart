@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:pomodoro_app/navigator_key.dart';
+import 'package:pomodoro_app/services/lock_screen_service.dart';
+import 'package:provider/provider.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'dart:io';
 
@@ -297,6 +300,7 @@ void startTimer() async {
 
   // Manejar la finalización del temporizador
   void _handleTimerComplete() async {
+    final context = navigatorKey.currentContext!;
     _timer?.cancel();
     _tickSoundTimer?.cancel();
     _elapsedTimer.stop();
@@ -320,11 +324,13 @@ void startTimer() async {
         _currentPhase = 'Long Break';
         _pomodorosBeforeLongBreak = POMODOROS_BEFORE_LONG_BREAK;
         await playAlarmSound();
+        Provider.of<LockScreenService>(context, listen: false).lock();
       } else {
         _isBreak = true;
         _remainingTime = SHORT_BREAK_TIME;
         _currentPhase = 'Short Break';
         await playAlarmSound();
+        Provider.of<LockScreenService>(context, listen: false).lock();
       }
     }
 

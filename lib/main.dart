@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pomodoro_app/navigator_key.dart';
+import 'package:pomodoro_app/screens/lock_screen.dart';
+import 'package:pomodoro_app/screens/settings_screen.dart';
+import 'package:pomodoro_app/services/lock_screen_service.dart';
 import 'screens/pomodoro_screen.dart';
 import 'services/timer_service.dart';
 
@@ -12,10 +16,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TimerService>(
-      create: (_) => TimerService(),
-      child: MaterialApp(
-        home: PomodoroScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<TimerService>(create: (_) => TimerService()),
+        ChangeNotifierProvider<LockScreenService>(create: (_) => LockScreenService()),
+      ],
+      child: Consumer<LockScreenService>(
+        builder: (context, lockScreenService, child) {
+          return MaterialApp(
+            navigatorKey: navigatorKey,
+            home: lockScreenService.isLocked ? LockScreen() : PomodoroScreen(),
+            routes: {
+              '/settings': (context) => SettingsScreen(),
+            },
+          );
+        },
       ),
     );
   }

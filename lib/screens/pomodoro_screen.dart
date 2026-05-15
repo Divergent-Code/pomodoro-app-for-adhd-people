@@ -42,6 +42,16 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
         _showRunningAlert(context);
       },
       child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/settings');
+              },
+            ),
+          ],
+        ),
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(

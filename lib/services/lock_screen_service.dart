@@ -2,10 +2,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pomodoro_app/services/email_service.dart';
 import 'package:pomodoro_app/services/preferences_service.dart';
 
 class LockScreenService extends ChangeNotifier {
+  static const platform = MethodChannel('com.divergentcode.pomodoro/lockdown');
+
   bool _isLocked = false;
   String? _unlockCode;
 
@@ -15,7 +18,16 @@ class LockScreenService extends ChangeNotifier {
     _isLocked = true;
     _unlockCode = _generateUnlockCode();
     _sendUnlockCode();
+    _minimizeWindows();
     notifyListeners();
+  }
+
+  Future<void> _minimizeWindows() async {
+    try {
+      await platform.invokeMethod('minimizeWindows');
+    } on PlatformException catch (e) {
+      print("Failed to minimize windows: '${e.message}'.");
+    }
   }
 
   void unlock() {
