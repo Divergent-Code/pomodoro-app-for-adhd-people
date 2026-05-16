@@ -17,6 +17,8 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
     WCHAR window_title[title_length];
     if (GetWindowTextW(hwnd, window_title, title_length)) {
         std::wstring title_str(window_title);
+        OutputDebugStringW(title_str.c_str());
+        OutputDebugStringW(L"\n");
         for (const auto& target : target_titles) {
             // Case-insensitive search
             std::wstring lower_title_str = title_str;
