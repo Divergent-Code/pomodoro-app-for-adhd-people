@@ -16,6 +16,7 @@ class LockScreenService extends ChangeNotifier {
   bool get isLocked => _isLocked;
 
   void lock() {
+    debugPrint("Locking screen...");
     _isLocked = true;
     _unlockCode = _generateUnlockCode();
     _sendUnlockCode();

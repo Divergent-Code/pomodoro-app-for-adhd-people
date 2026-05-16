@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:pomodoro_app/navigator_key.dart';
 import 'package:pomodoro_app/services/lock_screen_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'dart:io';
 
@@ -55,6 +56,7 @@ class TimerService extends ChangeNotifier {
 
   // Método de inicialización
   void initialize() async {
+    await _loadTimerState();
     if (Platform.isAndroid || Platform.isIOS) {
       // Inicializar audio en modo silencioso para preparar el sistema
       //_audioPlayer = AudioPlayer();
@@ -343,6 +345,7 @@ void startTimer() async {
 
     _isRunning = false;
     _isPaused = false;
+    _saveTimerState();
     notifyListeners();
   }
 
@@ -366,6 +369,19 @@ void startTimer() async {
 
   void resetPomodoroCompleted() {
     _pomodoroCompleted = false;
+  }
+
+  Future<void> _saveTimerState() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('completedPomodoros', _completedPomodoros);
+    await prefs.setInt('pomodorosBeforeLongBreak', _pomodorosBeforeLongBreak);
+  }
+
+  Future<void> _loadTimerState() async {
+    final prefs = await SharedPreferences.getInstance();
+    _completedPomodoros = prefs.getInt('completedPomodoros') ?? 0;
+    _pomodorosBeforeLongBreak = prefs.getInt('pomodorosBeforeLongBreak') ?? pomodorosBeforeLongBreakConstant;
+    notifyListeners();
   }
 
   @override

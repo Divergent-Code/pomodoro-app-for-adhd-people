@@ -1,7 +1,6 @@
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:pomodoro_app/models/task.dart';
 import 'package:pomodoro_app/services/task_service.dart';
 import 'package:provider/provider.dart';
 

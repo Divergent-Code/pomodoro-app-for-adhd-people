@@ -59,6 +59,12 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
         appBar: AppBar(
           actions: [
             IconButton(
+              icon: const Icon(Icons.bar_chart),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/stats');
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.history),
               onPressed: () {
                 Navigator.of(context).pushNamed('/distractions');
