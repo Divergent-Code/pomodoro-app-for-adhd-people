@@ -3,7 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:pomodoro_app/navigator_key.dart';
 import 'package:pomodoro_app/screens/lock_screen.dart';
 import 'package:pomodoro_app/screens/settings_screen.dart';
+import 'package:pomodoro_app/screens/distraction_log_screen.dart';
+import 'package:pomodoro_app/screens/task_screen.dart';
+import 'package:pomodoro_app/services/distraction_service.dart';
 import 'package:pomodoro_app/services/lock_screen_service.dart';
+import 'package:pomodoro_app/services/task_service.dart';
 import 'screens/pomodoro_screen.dart';
 import 'services/timer_service.dart';
 
@@ -20,6 +24,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<TimerService>(create: (_) => TimerService()),
         ChangeNotifierProvider<LockScreenService>(create: (_) => LockScreenService()),
+        ChangeNotifierProvider<TaskService>(create: (_) => TaskService()),
+        ChangeNotifierProvider<DistractionService>(create: (_) => DistractionService()),
       ],
       child: Consumer<LockScreenService>(
         builder: (context, lockScreenService, child) {
@@ -28,6 +34,8 @@ class MyApp extends StatelessWidget {
             home: lockScreenService.isLocked ? const LockScreen() : PomodoroScreen(),
             routes: {
               '/settings': (context) => const SettingsScreen(),
+              '/tasks': (context) => const TaskScreen(),
+              '/distractions': (context) => const DistractionLogScreen(),
             },
           );
         },

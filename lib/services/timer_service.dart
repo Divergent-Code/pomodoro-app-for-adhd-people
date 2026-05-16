@@ -37,8 +37,10 @@ class TimerService extends ChangeNotifier {
   bool _isTickSoundEnabled = true;
   bool _isWakelockEnabled = true;
   String _currentPhase = 'Pomodoro';
+  bool _pomodoroCompleted = false;
 
   // Getters públicos
+  bool get pomodoroCompleted => _pomodoroCompleted;
   int get remainingTime => _remainingTime; // Tiempo restante en segundos
   int get completedPomodoros => _completedPomodoros;
   int get pomodorosBeforeLongBreak => _pomodorosBeforeLongBreak; // Ciclos restantes
@@ -316,6 +318,7 @@ void startTimer() async {
     } else {
       // Transición de pomodoro a pausa
       _completedPomodoros++;
+      _pomodoroCompleted = true;
       _pomodorosBeforeLongBreak--;
       if (_pomodorosBeforeLongBreak <= 0) {
         _isLongBreak = true;
@@ -359,6 +362,10 @@ void startTimer() async {
   // Detener el sonido de alarma
   Future<void> stopAlarmSound() async {
     await _audioPlayer?.stop();
+  }
+
+  void resetPomodoroCompleted() {
+    _pomodoroCompleted = false;
   }
 
   @override

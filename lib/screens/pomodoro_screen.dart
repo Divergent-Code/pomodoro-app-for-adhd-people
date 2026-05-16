@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../services/distraction_service.dart';
+import '../services/task_service.dart';
+import 'package:confetti/confetti.dart';
 import '../services/timer_service.dart';
 import '../widgets/custom_button.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -14,12 +17,14 @@ class PomodoroScreen extends StatefulWidget {
 class _PomodoroScreenState extends State<PomodoroScreen> {
   late TimerService _timerService;
   AudioPlayer? _alarmAudioPlayer;
+  late ConfettiController _confettiController;
 
   @override
   void initState() {
     super.initState();
     _timerService = Provider.of<TimerService>(context, listen: false);
     _timerService.initialize();
+    _confettiController = ConfettiController(duration: const Duration(seconds: 1));
     // Inicializar el reproductor de audio para las alarmas
     _alarmAudioPlayer = AudioPlayer();
     _alarmAudioPlayer!.setReleaseMode(ReleaseMode.loop);
@@ -28,6 +33,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
   @override
   void dispose() {
     _alarmAudioPlayer?.dispose();
+    _confettiController.dispose();
     super.dispose();
   }
 
@@ -41,9 +47,29 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
         }
         _showRunningAlert(context);
       },
-      child: Scaffold(
+      child: Stack(
+        children: [
+          Scaffold(
+            floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _showDistractionDialog(context);
+          },
+          child: const Icon(Icons.warning),
+        ),
         appBar: AppBar(
           actions: [
+            IconButton(
+              icon: const Icon(Icons.history),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/distractions');
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.list),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/tasks');
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
@@ -60,38 +86,112 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
             ),
           ),
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Indicador de fase
-                Text(
-                  _timerService.currentPhase,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: _timerService.getPhaseColor(),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                // Temporizador circular
-                _buildTimerDisplay(),
-                const SizedBox(height: 30),
-                // Controles principales
-                _buildMainControls(),
-                const SizedBox(height: 20),
-                // Controles secundarios (saltar, sonido, wakelock)
-                _buildSecondaryControls(),
-                const SizedBox(height: 30),
-                // Contador de pomodoros y progreso hacia pausa larga
-                _buildPomodoroProgress(),
-                const SizedBox(height: 20),
-                // Botón para detener alarma (visible solo cuando suena)
-                _buildAlarmControls(),
-              ],
+            child: Consumer<TimerService>(
+              builder: (context, timerService, child) {
+                if (timerService.pomodoroCompleted) {
+                  _confettiController.play();
+                  timerService.resetPomodoroCompleted();
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Indicador de fase
+                    Consumer<TaskService>(
+                      builder: (context, taskService, child) {
+                        return Text(
+                          taskService.selectedTask?.title ?? 'No task selected',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      _timerService.currentPhase,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: _timerService.getPhaseColor(),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    // Temporizador circular
+                    _buildTimerDisplay(),
+                    const SizedBox(height: 30),
+                    // Controles principales
+                    _buildMainControls(),
+                    const SizedBox(height: 20),
+                    // Controles secundarios (saltar, sonido, wakelock)
+                    _buildSecondaryControls(),
+                    const SizedBox(height: 30),
+                    // Contador de pomodoros y progreso hacia pausa larga
+                    _buildPomodoroProgress(),
+                    const SizedBox(height: 20),
+                    // Botón para detener alarma (visible solo cuando suena)
+                    _buildAlarmControls(),
+                  ],
+                );
+              },
             ),
           ),
         ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirectionality: BlastDirectionality.explosive,
+              shouldLoop: false,
+              colors: const [
+                Colors.green,
+                Colors.blue,
+                Colors.pink,
+                Colors.orange,
+                Colors.purple
+              ],
+            ),
+          ),
+        ],
       ),
+    );
+  }
+
+  void _showDistractionDialog(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Log a Distraction'),
+          content: TextField(
+            controller: controller,
+            decoration: const InputDecoration(
+              labelText: 'What distracted you?',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (controller.text.isNotEmpty) {
+                  Provider.of<DistractionService>(context, listen: false)
+                      .addDistraction(controller.text);
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('Log'),
+            ),
+          ],
+        );
+      },
     );
   }
 
